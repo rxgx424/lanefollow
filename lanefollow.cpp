@@ -25,7 +25,7 @@ int main(void)
 	VideoWriter writer3(wr3, 0, (double)30, Size(640, 90), true);  //라인검출 영상
 	if (!writer3.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
 	
-VideoCapture source("lanefollow_100rpm_cw.mp4"); //출력영상
+	VideoCapture source("lanefollow_100rpm_cw.mp4"); //출력영상
 	if (!source.isOpened()) { cerr << "failed!" << endl; return -1; } //예외처리
 
 	Mat src, dst, src2; //영상
@@ -36,7 +36,7 @@ VideoCapture source("lanefollow_100rpm_cw.mp4"); //출력영상
 	struct timeval start, end1; //시간 변수
 	double time1;
 	Point pt(160, 45), r_pt(480, 45), center(320, 45); //최소값 변수(이전값)
-Point min(320, 45), l_min(160, 45), r_min(480, 45); //최소값 변수(현재값)
+	Point min(320, 45), l_min(160, 45), r_min(480, 45); //최소값 변수(현재값)
 	signal(SIGINT, ctrlc_handler); //시그널 핸들러 지정
 	if (!mx.open()) { cout << "dynamixel open error" << endl; return -1; } //예외처리
 	while (true) {
@@ -55,7 +55,7 @@ Point min(320, 45), l_min(160, 45), r_min(480, 45); //최소값 변수(현재값
 		int c1[2], c2[2];  //c[0]=현재값, c[1]=최소값
 		int n1 = 0, n2 = 0; //최소값의 cnt값
 		l_pt = l_min;  r_pt = r_min; //라인의 중심값
-if (mx.kbhit()) //키보드 입력 체크
+		if (mx.kbhit()) //키보드 입력 체크
 		{
 			char ch = mx.getch(); //키입력 받기
 			if (ch == 'q') break; //q이면 종료
@@ -63,7 +63,7 @@ if (mx.kbhit()) //키보드 입력 체크
 		}
 		for (int i = 1;i < cnt;i++) {
 			int* p = stats.ptr<int>(i);
-Point pp= Point(centroids.at<double>(i, 0), centroids.at<double>(i, 1));  //현재 객체의 무게중심
+			Point pp= Point(centroids.at<double>(i, 0), centroids.at<double>(i, 1));  //현재 객체의 무게중심
 			if (i == 1) { //최소값 구하기위한 첫번째 값
 				c1[1] = abs(sqrt(pow(l_pt.x - pp.x, 2) + pow(l_pt.y - pp.y, 2)));
 				c2[1] = abs(sqrt(pow(r_pt.x - pp.x, 2) + pow(r_pt.y - pp.y, 2)));
@@ -99,7 +99,7 @@ Point pp= Point(centroids.at<double>(i, 0), centroids.at<double>(i, 1));  //현�
 		error = (dst.cols / 2) - min.x; //에러값(min.x=라인의 x값)
 		lvel = 100 - 0.15 * error;  //왼쪽 모터 속도
 		rvel = -(100 + 0.15 * error);  //오른쪽 모터 속도
-if (ctrl_c_pressed) break; //Ctrl+c입력시 탈출
+		if (ctrl_c_pressed) break; //Ctrl+c입력시 탈출
 		if (mode) mx.setVelocity(lvel, rvel); //다이나믹 셀 모드가 true면 작동
 		usleep(1000);
 		gettimeofday(&end1, NULL); //끝 시간
